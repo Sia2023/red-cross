@@ -1,3 +1,5 @@
+NOTE: this is supposed to be very and to be finished in a short time. We have to learn the code and to be able to explain and answer questions about it. 
+
 About the Project
 Introduction
 This project is a Community Second-Hand Platform developed as part of a university assignment to create a distributed system. The platform enables users to browse and book second-hand items uploaded exclusively by the site owner. It serves as a demonstration of distributed system principles while providing a practical application for community sharing. Key functionalities include user authentication, item management, and a booking system.
