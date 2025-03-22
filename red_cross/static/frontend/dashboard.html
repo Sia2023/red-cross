@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Dashboard - Second-Hand Items</title>
+    <link rel="stylesheet" href="/static/frontend/style.css">
+    <style>
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .user-welcome {
+            margin: 0;
+        }
+        
+        .dashboard-sections {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+        }
+        
+        .dashboard-section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .user-info {
+            grid-row: span 2;
+        }
+        
+        .user-info-item {
+            margin: 10px 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .user-info-label {
+            font-weight: bold;
+            color: #666;
+        }
+        
+        .booking-item {
+            display: flex;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .booking-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 15px;
+        }
+        
+        .booking-details {
+            flex-grow: 1;
+        }
+        
+        .booking-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+        
+        .cancel-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .admin-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #f44336;
+        }
+        
+        .nav-links a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #f44336;
+        }
+        
+        .no-bookings {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Red Cross</div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/items">Items</a>
+            <a href="/dashboard" class="active">Dashboard</a>
+            <a id="logout-link" href="#" onclick="logout()">Logout</a>
+        </div>
+    </nav>
+    
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1 class="user-welcome">Welcome, <span id="username">User</span>!</h1>
+            <div>
+                <button class="btn" onclick="window.location.href='/items'">Browse Items</button>
+            </div>
+        </div>
+        
+        <div class="dashboard-sections">
+            <div class="dashboard-section user-info">
+                <h2>Account Information</h2>
+                <div class="user-info-item">
+                    <div class="user-info-label">Username</div>
+                    <div id="user-username"></div>
+                </div>
+                <div class="user-info-item">
+                    <div class="user-info-label">Email</div>
+                    <div id="user-email"></div>
+                </div>
+                <div class="user-info-item">
+                    <div class="user-info-label">Account Type</div>
+                    <div id="user-type"></div>
+                </div>
+                <div class="user-info-item">
+                    <div class="user-info-label">Member Since</div>
+                    <div id="user-date-joined"></div>
+                </div>
+            </div>
+            
+            <div class="dashboard-section">
+                <h2>My Bookings</h2>
+                <div id="user-bookings">
+                    <div class="no-bookings">No bookings found. Browse items to make a booking.</div>
+                </div>
+            </div>
+            
+            <div class="dashboard-section" id="admin-dashboard-section" style="display: none;">
+                <h2>Admin Actions</h2>
+                <p>As an admin, you have access to additional features:</p>
+                <button class="btn" onclick="window.location.href='/items#admin-section'">Manage Items</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/static/frontend/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/login';
+                return;
+            }
+            
+            // Decode token to get user info
+            try {
+                const base64Url = token.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const decodedToken = JSON.parse(atob(base64));
+                
+                // Display admin section if user is admin
+                if (decodedToken.user_id === 1 || decodedToken.is_admin) {
+                    document.getElementById('admin-dashboard-section').style.display = 'block';
+                }
+                
+                // Fetch user details
+                fetch('/api/user-info/', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch user info');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById('username').textContent = data.username;
+                    document.getElementById('user-username').textContent = data.username;
+                    document.getElementById('user-email').textContent = data.email || 'N/A';
+                    document.getElementById('user-type').textContent = data.is_staff ? 'Admin' : 'Regular User';
+                    
+                    // Format date
+                    const dateJoined = new Date(data.date_joined);
+                    document.getElementById('user-date-joined').textContent = dateJoined.toLocaleDateString();
+                })
+                .catch(error => {
+                    console.error('Error fetching user info:', error);
+                });
+                
+                // Fetch user bookings (placeholder - API endpoint needs to be implemented)
+                // This would be implemented when you have a bookings API
+                /*
+                fetch('/api/bookings/', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                .then(response => response.json())
+                .then(bookings => {
+                    const bookingsContainer = document.getElementById('user-bookings');
+                    if (bookings.length === 0) {
+                        bookingsContainer.innerHTML = '<div class="no-bookings">No bookings found. Browse items to make a booking.</div>';
+                        return;
+                    }
+                    
+                    bookingsContainer.innerHTML = '';
+                    bookings.forEach(booking => {
+                        // Create booking item HTML
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching bookings:', error);
+                });
+                */
+            } catch (error) {
+                console.error('Error parsing token:', error);
+                window.location.href = '/login';
+            }
+        });
+    </script>
+</body>
+</html> 

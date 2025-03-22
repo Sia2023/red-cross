@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Red Cross Second-Hand Platform</title>
+    <link rel="stylesheet" href="/static/frontend/style.css">
+    <style>
+        .hero {
+            background-color: #f44336;
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .hero h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 20px;
+        }
+        
+        .action-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: white;
+            color: #f44336;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            margin: 10px;
+            transition: all 0.3s;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            max-width: 1200px;
+            margin: 0 auto 60px;
+        }
+        
+        .feature {
+            flex-basis: 30%;
+            text-align: center;
+            padding: 30px 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .feature h3 {
+            margin-bottom: 15px;
+            color: #f44336;
+        }
+        
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #f44336;
+        }
+        
+        .nav-links a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Red Cross</div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/items">Items</a>
+            <a id="dashboard-link" href="/dashboard" style="display: none;">Dashboard</a>
+            <a id="login-link" href="/login">Login</a>
+            <a id="signup-link" href="/signup">Sign Up</a>
+            <a id="logout-link" href="#" style="display: none;" onclick="logout()">Logout</a>
+        </div>
+    </nav>
+    
+    <section class="hero">
+        <h1>Second-Hand Community Platform</h1>
+        <p>Browse and book quality second-hand items from our curated collection. Supporting sustainability and community sharing.</p>
+        <a href="/items" class="action-btn">Browse Items</a>
+        <a href="/signup" class="action-btn">Join Us</a>
+    </section>
+    
+    <div class="container">
+        <section class="features">
+            <div class="feature">
+                <h3>Quality Items</h3>
+                <p>All items are carefully selected and verified for quality and condition by our dedicated team.</p>
+            </div>
+            <div class="feature">
+                <h3>Easy Booking</h3>
+                <p>Simple booking process allows you to reserve items with just a few clicks.</p>
+            </div>
+            <div class="feature">
+                <h3>Support Community</h3>
+                <p>Your participation helps support local Red Cross initiatives and sustainable living practices.</p>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <p>&copy; 2023 Red Cross Second-Hand Platform. All rights reserved.</p>
+    </footer>
+    
+    <script src="/static/frontend/script.js"></script>
+</body>
+</html> 

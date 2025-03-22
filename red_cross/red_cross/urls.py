@@ -16,18 +16,26 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.views import TokenRefreshView
 from django.views.generic import TemplateView
 from django.conf.urls.static import static 
 from django.conf import settings
+from api.serializers import CustomTokenObtainPairView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
-
-    path('', TemplateView.as_view(template_name='frontend/index.html'), name='index'),
+    # Frontend routes
+    path('', TemplateView.as_view(template_name='frontend/home.html'), name='home'),
+    path('items/', TemplateView.as_view(template_name='frontend/index.html'), name='items'),
     path('login/', TemplateView.as_view(template_name='frontend/login.html'), name='login'),
+    path('signup/', TemplateView.as_view(template_name='frontend/signup.html'), name='signup'),
+    path('dashboard/', TemplateView.as_view(template_name='frontend/dashboard.html'), name='dashboard'),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# Add media URL patterns to serve uploaded images in development
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

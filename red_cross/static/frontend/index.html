@@ -1,10 +1,43 @@
 <!DOCTYPE html>
 <html>
-<head><title>Second-Hand Items</title><link rel="stylesheet" href="/static/frontend/style.css"></head>
+<head>
+    <title>Second-Hand Items</title>
+    <link rel="stylesheet" href="/static/frontend/style.css">
+</head>
 <body>
-    <h1>Available Items</h1>
-    <div id="item-list"></div>
-    <button onclick="logout()">Logout</button>
+    <div class="container">
+        <h1>Available Items</h1>
+        
+        <!-- Admin section for adding items (visible only to admins) -->
+        <div id="admin-section" style="display: none;">
+            <h2>Add New Item</h2>
+            <form id="add-item-form" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="name">Item Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="price">Price:</label>
+                    <input type="number" id="price" name="price" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="image">Image:</label>
+                    <input type="file" id="image" name="image" accept="image/*">
+                </div>
+                <button type="submit" class="btn">Add Item</button>
+            </form>
+        </div>
+        
+        <!-- Items list section -->
+        <div id="item-list" class="items-grid"></div>
+        
+        <button onclick="logout()" class="btn logout-btn">Logout</button>
+    </div>
+    
     <script src="/static/frontend/script.js"></script>
 </body>
 </html>
