@@ -331,22 +331,30 @@ function logout() {
 
 // Initialize page based on current location
 document.addEventListener('DOMContentLoaded', function() {
-    // Check if user is logged in
-    const token = localStorage.getItem('token');
+    // Update navigation based on authentication
+    updateNavigation();
     
-    // Common header navigation handling for all pages
+    // Load items if on the items page
+    if (window.location.pathname.includes('items')) {
+        loadItems();
+    }
+});
+
+// Function to update navigation links based on authentication status
+function updateNavigation() {
+    const token = localStorage.getItem('token');
     const loginLink = document.getElementById('login-link');
     const signupLink = document.getElementById('signup-link');
     const logoutLink = document.getElementById('logout-link');
     const dashboardLink = document.getElementById('dashboard-link');
     
     if (token) {
-        // User is logged in - update navigation
+        // User is logged in
         if (loginLink) loginLink.style.display = 'none';
         if (signupLink) signupLink.style.display = 'none';
         if (logoutLink) logoutLink.style.display = 'inline';
         
-        // Check for admin privileges
+        // Check if user is admin
         try {
             const decoded = parseJwt(token);
             if (decoded && (decoded.user_id === 1 || decoded.is_admin)) {
@@ -355,13 +363,14 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (error) {
             console.error('Error parsing token:', error);
         }
+    } else {
+        // User is not logged in
+        if (loginLink) loginLink.style.display = 'inline';
+        if (signupLink) signupLink.style.display = 'inline';
+        if (logoutLink) logoutLink.style.display = 'none';
+        if (dashboardLink) dashboardLink.style.display = 'none';
     }
-    
-    // Load items if on the items page
-    if (window.location.pathname.includes('items')) {
-        loadItems();
-    }
-});
+}
 
 // Expose functions to window object for HTML onclick handlers
 window.bookItem = bookItem;
