@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Second-Hand Items</title>
+    <link rel="stylesheet" href="/static/frontend/style.css">
+    <style>
+        /* Navbar styles */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #f44336;
+        }
+        
+        .nav-links a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Red Cross</div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/items">Items</a>
+            <a id="dashboard-link" href="/dashboard" style="display: none;">Dashboard</a>
+            <a id="login-link" href="/login">Login</a>
+            <a id="signup-link" href="/signup">Sign Up</a>
+            <a id="logout-link" href="#" style="display: none;" onclick="logout()">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Available Items</h1>
+        
+        <!-- Admin section for adding items (visible only to admins) -->
+        <div id="admin-section" style="display: none;">
+            <h2>Add New Item</h2>
+            <form id="add-item-form" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="name">Item Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="price">Price:</label>
+                    <input type="number" id="price" name="price" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="image">Image:</label>
+                    <input type="file" id="image" name="image" accept="image/*">
+                </div>
+                <button type="submit" class="btn">Add Item</button>
+            </form>
+        </div>
+        
+        <!-- Items list section -->
+        <div id="item-list" class="items-grid"></div>
+        
+        <button onclick="logout()" class="btn logout-btn">Logout</button>
+    </div>
+    
+    <script src="/static/frontend/script.js"></script>
+</body>
+</html>
